@@ -5,37 +5,26 @@ import { Assignment } from './assignment.model';
 @Component({
   selector: 'app-assignments',
   templateUrl: './assignments.component.html',
-  styleUrls: ['./assignments.component.css']
+  styleUrls: ['./assignments.component.css'],
 })
 export class AssignmentsComponent implements OnInit {
-  titre="Mon application sur les assignments";
-  formVisible=false;
+  titre = 'Mon application sur les assignments';
 
-  assignments!:Assignment[];
+  assignments!: Assignment[];
 
-  assignmentSelectionne!:Assignment;
+  assignmentSelectionne!: Assignment;
 
-
-  constructor(private assignmentsService:AssignmentsService) { }
+  constructor(private assignmentsService: AssignmentsService) {}
 
   ngOnInit(): void {
-   this.assignmentsService.getAssignments()
-   .subscribe(tableauDesAssignmentsObservable => {
-    this.assignments = tableauDesAssignmentsObservable
-   });
+    this.assignmentsService
+      .getAssignments()
+      .subscribe((tableauDesAssignmentsObservable) => {
+        this.assignments = tableauDesAssignmentsObservable;
+      });
   }
 
-
-  onAssignmentClicke(assignment:Assignment) {
+  onAssignmentClicke(assignment: Assignment) {
     this.assignmentSelectionne = assignment;
-  }
-
-  onAddAssignmentBtnClick() {
-    this.formVisible = true;
-  }
-
-  onNouvelAssignment(assignment:Assignment) {
-    this.assignments.push(assignment);
-    this.formVisible = false;
   }
 }

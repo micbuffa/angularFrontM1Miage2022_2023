@@ -13,18 +13,35 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { AssignmentsDetailsComponent } from './assignments/assignments-details/assignments-details.component';
 import { RenduDirective } from './shared/rendu.directive';
 import { FormsModule } from '@angular/forms';
 import { AddAssignmentComponent } from './assignments/add-assignment/add-assignment.component';
+import { RouterModule, Routes } from '@angular/router';
+import { EditAssignmentComponent } from './assignments/edit-assignment/edit-assignment.component';
+import { AuthGuard } from './shared/auth.guard';
+
+const routes:Routes = [
+  {path: '', component: AssignmentsComponent},
+  {path: 'home', component: AssignmentsComponent},
+  {path: 'add', component: AddAssignmentComponent},
+  {path: 'assignment/:id', component: AssignmentsDetailsComponent},
+  {
+    path: 'assignment/:id/edit',
+    component: EditAssignmentComponent,
+    canActivate: [AuthGuard]
+  }
+]
 @NgModule({
   declarations: [
     AppComponent,
     AssignmentsComponent, AssignmentsDetailsComponent,
     RenduDirective,
     AddAssignmentComponent,
+    EditAssignmentComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,8 +49,9 @@ import { AddAssignmentComponent } from './assignments/add-assignment/add-assignm
     MatButtonModule, MatIconModule, MatDividerModule,
     MatInputModule, MatFormFieldModule,
     MatDatepickerModule, MatNativeDateModule, MatListModule,
-    MatCardModule, MatCheckboxModule,
-    FormsModule
+    MatCardModule, MatCheckboxModule, MatSlideToggleModule,
+    FormsModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
