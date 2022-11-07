@@ -24,12 +24,14 @@ export class AddAssignmentComponent implements OnInit {
     newAssignment.nom = this.nomDevoir;
     newAssignment.dateDeRendu = this.dateDeRendu;
     newAssignment.rendu = false;
+    newAssignment.id = Math.floor(Math.random()*100000000);
+
 
     //this.assignments.push(newAssignment);
     //this.nouvelAssignment.emit(newAssignment);
     this.assignmentsService.addAssignment(newAssignment)
-      .subscribe(message => {
-        console.log(message);
+      .subscribe(reponse => {
+        console.log(reponse.message);
       });
   }
 }

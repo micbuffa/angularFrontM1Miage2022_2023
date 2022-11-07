@@ -2,53 +2,45 @@ import { Injectable } from '@angular/core';
 import { Assignment } from '../assignments/assignment.model';
 import { Observable, of } from 'rxjs';
 import { LoggingService } from './logging.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssignmentsService {
-  assignments:Assignment[] = [
-    {
-      id:1,
-      nom: "Devoir Angular à rendre",
-      dateDeRendu: new Date('2022-10-10'),
-      rendu: false
-    },
-    {
-      id:2,
-      nom: "Devoir JAVA à rendre",
-      dateDeRendu: new Date('2022-09-10'),
-      rendu: true
-    },
-    {
-      id:3,
-      nom: "Devoir BD à rendre",
-      dateDeRendu: new Date('2022-12-01'),
-      rendu: false
-    }
-    ];
+  assignments:Assignment[] = [];
 
-  constructor(private logginService:LoggingService) { }
+  constructor(private logginService:LoggingService,
+              private http:HttpClient) { }
+
+ //uri = "http://localhost:8010/api/assignments";
+ uri = "https://api-cours-angular-2023.herokuapp.com/api/assignments";
 
   getAssignments():Observable<Assignment[]> {
-    return of(this.assignments);
+    return this.http.get<Assignment[]>(this.uri)
+
+    //return of(this.assignments);
   }
 
   // renvoie comme Observable l'assignment dont l'id est passé
   // en paramètre, ou undefined s'il n'existe pas
   getAssignment(id:number):Observable<Assignment|undefined> {
-    const a:Assignment|undefined = this.assignments.find(a => a.id === id);
+    /*const a:Assignment|undefined = this.assignments.find(a => a.id === id);
     if(a)
-    console.log("getAssignment id= " + id + " nom = " + a.nom)
-    return of(a);
+
+    console.log("getAssignment id= " + id + " nom = " + a.nom)*/
+    //return of(a);
+    console.log("get by id id = "+id)
+    return this.http.get<Assignment>(this.uri + "/" + id)
   }
 
-  addAssignment(assignment:Assignment):Observable<string> {
-    this.assignments.push(assignment);
+  addAssignment(assignment:Assignment):Observable<any> {
+    //this.assignments.push(assignment);
 
-    this.logginService.log(assignment.nom, "ajouté !");
+    //this.logginService.log(assignment.nom, "ajouté !");
 
-    return of("Assignment ajouté");
+    //return of("Assignment ajouté");
+    return this.http.post<Assignment>(this.uri, assignment);
   }
 
   updateAssignment(assignment:Assignment):Observable<string> {
